@@ -1,0 +1,109 @@
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Route{
+    int server1,
+            server2,
+            latency;
+
+    public int getLatency() {
+        return latency;
+    }
+
+    public Route(int server1, int server2, int latency){
+        this.server1 = server1;
+        this.server2 = server2;
+        this.latency = latency;
+    }
+}
+
+class Case{
+    int numberOfServers = 0,
+            numberOfRoutes = 0,
+            source = 0,
+            destination = 0;
+    ArrayList<Route> routes = new ArrayList<Route>();
+
+    public Case(int numberOfServers, int numberOfRoutes, int source, int destination){
+        this.numberOfServers = numberOfServers;
+        this.numberOfRoutes = numberOfRoutes;
+        this.source = source;
+        this.destination = destination;
+    }
+
+    public ArrayList<Route> getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(ArrayList<Route> routes) {
+        this.routes = routes;
+    }
+
+
+    public int getShortestTime(ArrayList<Route> routes, Case currentCase){
+        if(routes.size() == 1){
+            //System.out.println(routes.get(0).getLatency());
+            return routes.get(0).getLatency();
+        }
+        else if(routes.size() == 2){
+            return (routes.get(0).getLatency() + routes.get(1).getLatency());
+        }
+        else {
+            //System.out.println("IN PROGRESS!");
+            
+            return 0;
+        }
+    }
+}
+
+public class SMTP{
+
+    public static void print(ArrayList<String> output){
+        for (int i = 0; i < output.size(); i++){
+            System.out.println("Case# " + (i + 1) + " : " + output.get(i));
+        }
+    }
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        ArrayList<Route> routes = new ArrayList<Route>();
+        ArrayList<String> output = new ArrayList<String>();
+        int numberOfCases = 0,
+                numberOfServers = 0,
+                numberOfRoutes = 0,
+                source = 0,
+                destination = 0,
+                server1 = 0,
+                server2 = 0,
+                latency = 0;
+
+        // Enter number of Cases
+        numberOfCases = input.nextInt();
+        for (int i = 0; i < numberOfCases; i++){
+            numberOfServers = input.nextInt();
+            numberOfRoutes = input.nextInt();
+            source = input.nextInt();
+            destination = input.nextInt();
+            Case caseObject = new Case(numberOfServers, numberOfRoutes, source, destination);
+
+            if (numberOfRoutes == 0){
+                output.add("Unreachable!");
+                continue;
+            }
+            // else
+            for (int j = 0; j < numberOfRoutes; j++){
+                //System.out.println("Enter Route " + (j+1) + " of Case# " + (i+1));
+                server1 = input.nextInt();
+                server2 = input.nextInt();
+                latency = input.nextInt();
+                Route route = new Route(server1, server2, latency);
+                routes.add(route);
+            }
+            output.add(Integer.toString(caseObject.getShortestTime(routes, caseObject)));
+            routes.clear();
+        }
+        print(output);
+    }
+}
+
+// my code
